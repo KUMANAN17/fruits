@@ -1,21 +1,26 @@
-// pages/order.jsx
+"use client";
 import { useState } from "react";
 
-export default function FruitOrderPage() {
+export default function FruitOrderPage({ params }) {
   const [fruit, setFruit] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
+
+    if (!fruit) {
+      alert("Please select a fruit before submitting your order.");
+      return;
+    }
+
     console.log(`Ordered ${quantity} ${fruit}(s)`);
     setSubmitted(true);
   };
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>🍉 Fruit Order Page</h1>
+      <h1>🍉 Fruit Order Page {params?.slug ? `for ${params.slug}` : ""}</h1>
 
       <form onSubmit={handleSubmit}>
         <label>

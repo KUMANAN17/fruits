@@ -1,5 +1,16 @@
 import { useEffect, useState } from 'react';
-import Header from '../components/common/Header';
+
+
+
+function FruitCard({ fruit, onOrder }) {
+  return (
+    <div style={{ border: '1px solid #ccc', margin: '10px', padding: '10px', borderRadius: '8px' }}>
+      <h3>{fruit.Fruitsname}</h3>
+      <p>Price: ₹{fruit.price}</p>
+      <button onClick={() => onOrder(fruit)}>Order</button>
+    </div>
+  );
+}
 
 export default function OrderPage() {
   const [fruits, setFruits] = useState([]);
