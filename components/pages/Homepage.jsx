@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 function FruitCard({ fruit, onOrder }) {
   return (
     <div style={{ border: '1px solid #ccc', margin: '10px', padding: '10px', borderRadius: '8px' }}>
-      <h3>{fruit.Fruitsname}</h3>
+      <h3>{fruit.name}</h3>
       <p>Price: ₹{fruit.price}</p>
       <button onClick={() => onOrder(fruit)}>Order</button>
     </div>
@@ -30,6 +30,7 @@ export default function OrderPage() {
   }, []);
 
   const handleOrderClick = (fruit) => {
+    console.log("Selected fruit:", fruit);
     setSelectedFruit(fruit);
   };
 
@@ -37,7 +38,7 @@ export default function OrderPage() {
     e.preventDefault();
     const total = selectedFruit.price * quantity;
     const order = {
-      Fruitsname: selectedFruit.Fruitsname,
+      Fruitsname: selectedFruit.name,
       price: selectedFruit.price,
       Quantity: quantity,
       Total: total,
@@ -48,7 +49,7 @@ export default function OrderPage() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>🍎 Order Fruits</h1>
+      <h1>🍎 Order Fruits </h1>
       {!selectedFruit ? (
         <>
           {fruits.map((fruit, index) => (
@@ -57,7 +58,7 @@ export default function OrderPage() {
         </>
       ) : (
         <form onSubmit={handleSubmitOrder}>
-          <h3>Selected Fruit: {selectedFruit.Fruitsname}</h3>
+          <h3>Selected Fruit: {selectedFruit.name}</h3>
           <p>Price: ₹{selectedFruit.price}</p>
           <label>
             Quantity:
@@ -70,14 +71,14 @@ export default function OrderPage() {
             />
           </label>
           <br /><br />
-          <button type="submit">Place Order</button>
+          <button className='bg-green-500 text-white py-2 px-4 rounded-4xl'type="submit">Place Order</button>
         </form>
       )}
 
       {orderDetails && (
         <div style={{ marginTop: '20px', color: 'green' }}>
           <h3>✅ Order Placed</h3>
-          <p>Fruit: {orderDetails.Fruitsname}</p>
+          <p>Fruit: {orderDetails.name}</p>
           <p>Quantity: {orderDetails.Quantity}</p>
           <p>Total: ₹{orderDetails.Total}</p>
         </div>
