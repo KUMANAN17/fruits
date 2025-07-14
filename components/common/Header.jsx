@@ -11,8 +11,10 @@ export default function Header() {
   backgroundColor: '#fff0d9',
   padding: '4px 8px',
   borderRadius: '6px'}}>🍎🍊🍇Fruit Shop🍇🍊🍎</h2>
-      <nav>
-        <Link href="/">Home</Link> | <Link href="/order">Order</Link>
+      <nav className="space-x-4">
+        <Link className="text-blue-600 hover:underline" href="/">Home</Link>
+        <Link className="text-blue-600 hover:underline" href="/order">Order</Link>
+        <Link className="text-blue-600 hover:underline" href="/owner">Owner</Link>
       </nav>
     </header>
   );

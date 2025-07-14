@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
 
 
-
 function FruitCard({ fruit, onOrder }) {
   return (
     <div style={{ border: '1px solid #ccc', margin: '10px', padding: '10px', borderRadius: '8px' }}>
       <h3>{fruit.name}</h3>
       <p>Price: ₹{fruit.price}</p>
-      <button onClick={() => onOrder(fruit)}>Order</button>
+      <button
+        onClick={() => onOrder(fruit)}
+        className='bg-green-500 text-white py-2 px-4 rounded-4xl'
+        type="submit"
+      >
+        Order
+      </button>
     </div>
   );
 }
