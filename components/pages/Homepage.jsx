@@ -7,7 +7,7 @@ function FruitCard({ fruit, onOrder }) {
       <h3>{fruit.name}</h3>
       <p>Price: ₹{fruit.price}</p>
       <p>Available Quantity: {fruit.quantity}</p>
-      
+
       <button
         onClick={() => onOrder(fruit)}
         className='bg-green-500 text-white py-2 px-4 rounded-4xl'
@@ -22,7 +22,7 @@ function FruitCard({ fruit, onOrder }) {
 export default function OrderPage() {
   const [fruits, setFruits] = useState([]);
   const [selectedFruit, setSelectedFruit] = useState(null);
-  const [quantity, setQuantity] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const [orderDetails, setOrderDetails] = useState(null);
   
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function OrderPage() {
           <p>Fruit: {orderDetails.name}</p>
           <p>Quantity: {orderDetails.Quantity}</p>
           <p>Total: ₹{orderDetails.Total}</p>
-          <p>Quantity: {fruit.quantity}</p>
+          <p>Thank you for your order!</p>
         </div>
       )}
     </div>
