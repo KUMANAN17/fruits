@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import Link from 'next/link';
 function FruitCard({ fruit, onOrder }) {
   return (
     <div
@@ -19,7 +19,7 @@ function FruitCard({ fruit, onOrder }) {
         onClick={() => onOrder(fruit)}
         onError={(e) => {
           e.target.onerror = null;
-          e.target.src = '/images/placeholder.png'; // fallback
+          e.target.src = '/images/placeholder.png'; 
         }}
       />
       <div style={{ marginLeft: '16px' }}>
@@ -105,22 +105,28 @@ export default function OrderPage() {
       )}
 
       {orderDetails && (
-        <div style={{ marginTop: '20px', color: 'green' }}>
-          <h3>✅ Order Placed</h3>
-          <p>Fruit: {orderDetails.name}</p>
-          <p>Quantity: {orderDetails.quantity}</p>
-          <p>Total: ₹{orderDetails.total}</p>
-          <p>Thank you for your order!</p>
-          <img
-            src={`/images/${orderDetails.name.toLowerCase()}.png`}
-            alt={orderDetails.name}
-            className="w-24 h-24 object-contain mt-2"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = '/images/placeholder.png';
-            }}
-          />
-        </div>
+        <>
+          <div style={{ marginTop: '20px', color: 'green' }}>
+            <h3>✅ Order Placed</h3>
+            <p>Fruit: {orderDetails.name}</p>
+            <p>Quantity: {orderDetails.quantity}</p>
+            <p>Total: ₹{orderDetails.total}</p>
+            <p>Thank you for your order!</p>
+            <img
+              src={`/images/${orderDetails.name.toLowerCase()}.png`}
+              alt={orderDetails.name}
+              className="w-36 h-36 object-contain mt-4"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = '/images/placeholder.png';
+              }}
+            />
+          </div>
+          <Link href="/" className="mt-4 inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-800">
+  🔙 Back to Homepage
+</Link>
+
+        </>
       )}
     </div>
   );

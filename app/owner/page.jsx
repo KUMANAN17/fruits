@@ -1,157 +1,134 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function OwnerPage() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [passwordInput, setPasswordInput] = useState('');
   const [fruits, setFruits] = useState([]);
-  const [editQuantities, setEditQuantities] = useState({});
-  const [newFruit, setNewFruit] = useState({ name: '', price: '', quantity: 0 });
-
-  const OWNER_PASSWORD = 'admin123';
+  const [editData, setEditData] = useState({});
 
   useEffect(() => {
-    if (loggedIn) {
-      fetch("http://127.0.0.1:8000/api/fruits/")
-        .then((res) => res.json())
-        .then((data) => {
-          setFruits(data);
-          const quantities = {};
-          data.forEach(fruit => {
-            quantities[fruit.id] = fruit.quantity;
-          });
-          setEditQuantities(quantities);
+    fetch('http://127.0.0.1:8000/api/fruits/')
+      .then(res => res.json())
+      .then(data => {
+        setFruits(data);
+        const initialEdit = {};
+        data.forEach(fruit => {
+          initialEdit[fruit.id] = {
+            name: fruit.name,
+            price: fruit.price,
+            quantity: fruit.quantity
+          };
         });
-    }
-  }, [loggedIn]);
+        setEditData(initialEdit);
+      });
+  }, []);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (passwordInput === OWNER_PASSWORD) {
-      setLoggedIn(true);
-    } else {
-      alert("Wrong password");
-    }
-  };
-
-  const handleAddFruit = async (e) => {
-    e.preventDefault();
-    const res = await fetch("http://127.0.0.1:8000/api/fruits/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newFruit),
+  const handleChange = (id, field, value) => {
+    setEditData({
+      ...editData,
+      [id]: {
+        ...editData[id],
+        [field]: field === 'price' || field === 'quantity' ? Number(value) : value,
+      }
     });
-
-    const data = await res.json();
-    setFruits([...fruits, data]);
-    setEditQuantities({ ...editQuantities, [data.id]: data.quantity });
-    setNewFruit({ name: "", price: "", quantity: 0 });
   };
 
-  const handleQuantityChange = (id, newQuantity) => {
-    setEditQuantities({ ...editQuantities, [id]: newQuantity });
-  };
-
-  const handleUpdateQuantity = async (id) => {
+  const handleUpdate = async (id) => {
+    const update = editData[id];
     const res = await fetch(`http://127.0.0.1:8000/api/fruits/${id}/`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ quantity: editQuantities[id] }),
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(update),
     });
 
     if (res.ok) {
       const updated = await res.json();
-      setFruits(fruits.map(f => (f.id === id ? updated : f)));
+      setFruits(fruits.map(fruit => fruit.id === id ? updated : fruit));
+      alert('✅ Fruit updated!');
+    } else {
+      alert('❌ Failed to update');
     }
   };
 
-  if (!loggedIn) {
-    return (
-      <div className="p-6">
-        <h2 className="text-xl font-bold mb-4">Owner Login</h2>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            type="password"
-            placeholder="Enter owner password"
-            value={passwordInput}
-            onChange={(e) => setPasswordInput(e.target.value)}
-            className="border p-2 rounded w-full"
-            required
-          />
-          <button
-            type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
-            Login
-          </button>
-        </form>
-      </div>
-    );
-  }
+  const handleDelete = async (id) => {
+    const confirm = window.confirm('Are you sure you want to remove this fruit?');
+    if (!confirm) return;
 
+    const res = await fetch(`http://127.0.0.1:8000/api/fruits/${id}/`, {
+      method: 'DELETE',
+    });
+
+    if (res.ok || res.status === 204) {
+      setFruits(fruits.filter(fruit => fruit.id !== id));
+      alert('🗑️ Fruit removed!');
+    } else {
+      alert('❌ Failed to remove');
+    }
+  };
+  
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-semibold mb-2">🍎🍊🍇 Owner Panel🍇🍊🍎</h2>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-6">🍇 Owner Control Panel</h1>
+      {fruits.map((fruit) => (
+        <div key={fruit.id} className="flex items-center gap-6 mb-6 p-4 border rounded shadow">
+          <img
+            src={`/images/${fruit.name.toLowerCase()}.png`}
+            alt={fruit.name}
+            className="w-40 h-40 object-contain border rounded"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = '/images/placeholder.png';
+            }}
+          />
 
-      <form onSubmit={handleAddFruit} className="space-y-3 mb-6">
-        <input
-          type="text"
-          placeholder="Fruit name"
-          value={newFruit.name}
-          onChange={(e) => setNewFruit({ ...newFruit, name: e.target.value })}
-          className="border p-2 rounded w-full"
-          required
-        />
-        <input
-          type="number"
-          placeholder="Price"
-          value={newFruit.price}
-          onChange={(e) => setNewFruit({ ...newFruit, price: e.target.value })}
-          className="border p-2 rounded w-full"
-          required
-        />
-        <input
-          type="number"
-          placeholder="Quantity"
-          value={newFruit.quantity}
-          onChange={(e) => setNewFruit({ ...newFruit, quantity: e.target.value })}
-          className="border p-2 rounded w-full"
-          required
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          ➕ Add Fruit
-        </button>
-      </form>
+          <div className="flex-1">
+            <label className="block text-sm">Fruit Name:</label>
+            <input
+              type="text"
+              value={editData[fruit.id]?.name || ''}
+              onChange={(e) => handleChange(fruit.id, 'name', e.target.value)}
+              className="border p-2 w-full mb-2"
+            />
 
-      <h2 className="text-lg font-semibold">Edit Fruit Quantities</h2>
-      <ul className="mt-2 space-y-3">
-        {fruits.map((fruit) => (
-          <li key={fruit.id} className="flex items-center space-x-4">
-            <span>
-              {fruit.name} - ₹{fruit.price}
-            </span>
+            <label className="block text-sm">Price (₹):</label>
             <input
               type="number"
-              value={editQuantities[fruit.id] || 0}
-              onChange={(e) => handleQuantityChange(fruit.id, e.target.value)}
-              className="border p-1 w-20 rounded"
+              value={editData[fruit.id]?.price || ''}
+              onChange={(e) => handleChange(fruit.id, 'price', e.target.value)}
+              className="border p-2 w-full mb-2"
             />
-            <button
-              onClick={() => handleUpdateQuantity(fruit.id)}
-              className="bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700"
-            >
-               Save
-            </button>
-          </li>
-        ))}
-      </ul>
-      <Link href="/" className="mt-4 inline-block bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800">
-        🔙 Back to Homepage
-      </Link>
+
+            <label className="block text-sm">Quantity:</label>
+            <input
+              type="number"
+              value={editData[fruit.id]?.quantity || ''}
+              onChange={(e) => handleChange(fruit.id, 'quantity', e.target.value)}
+              className="border p-2 w-full mb-4"
+            />
+
+            <div className="flex gap-4">
+              <button
+                onClick={() => handleUpdate(fruit.id)}
+                className="bg-blue-500 text-white px-2 py-2 rounded hover:bg-blue-600"
+              >
+                💾 Save
+              </button>
+              <button
+                onClick={() => handleDelete(fruit.id)}
+                className="bg-red-500 text-white px-2 py-2 rounded hover:bg-red-600"
+              >
+                ❌ Remove
+              </button>
+              
+            </div>
+          </div>
+        </div>
+      ))}
+      <Link
+               href="/"
+                className="mt-2 inline-block bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
+                 🔙 Back to Homepage
+              </Link>
     </div>
   );
 }
