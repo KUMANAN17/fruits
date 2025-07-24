@@ -12,10 +12,10 @@ export default function Homepage() {
   }, []);
 
   return (
-    <div className="p-8">
+    <div className="p-6">
       <h1 className="text-3xl font-bold mb-6 text-orange-600">🍎 Welcome to the Fruit Shop</h1>
 
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6">
         {fruits.map(fruit => (
           <div key={fruit.id} className="border p-4 rounded shadow">
             <img

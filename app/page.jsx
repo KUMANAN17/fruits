@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main style={{ padding: '20px' }}>
       <Header />
-      <h1>Welcome to the Fruit Ordering App</h1>
+      <h1></h1>
       <OrderPage />
     </main>
   );

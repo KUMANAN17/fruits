@@ -1,25 +1,30 @@
+'use client';
 import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header>
-      <h2 style={{
-  textAlign: 'center',
-  fontSize: '24px',
-  fontWeight: 'bold',
-  color: 'orange',
-  backgroundColor: '#fff0d9',
-  padding: '4px 8px',
-  borderRadius: '6px'}}>🍎🍊🍇Fruit Shop🍇🍊🍎</h2>
-      <nav className="space-x-4">
+    <header className="bg-orange-200 p-4">
+      
+      <div className="text-center text-5xl font-bold text-blue-600 mb-2">
+        🍎 🍊 🍇 Fruit Shop 🍐 🍑 🍓
+      </div>
+
+      
+      <div className="flex justify-between items-center">
+        
+        <div className="flex gap-4">
+          <Link href="/" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Home</Link>
+          <Link href="/order" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Order</Link>
+        </div>
+
+        
         <Link
-               href="/"
-               className="text-blue-600 hover:underline">
-                 Home
-              </Link>
-        <Link className="text-blue-600 hover:underline" href="/order">Order</Link>
-        <Link className="text-blue-600 hover:underline" href="/owner">Owner</Link>
-      </nav>
+          href="/owner"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          🔐 Owner Login
+        </Link>
+      </div>
     </header>
   );
 }
