@@ -14,7 +14,7 @@ export default function OwnerPage() {
   });
   const [showAddForm, setShowAddForm] = useState(false);
 
-  // ✅ Check localStorage login status on first load
+ 
   useEffect(() => {
     const stored = localStorage.getItem('ownerLoggedIn');
     if (stored === 'true') {
@@ -23,7 +23,7 @@ export default function OwnerPage() {
     }
   }, []);
 
-  // ✅ Dummy login logic
+  
   const handleLogin = () => {
     if (password === 'admin123') {
       localStorage.setItem('ownerLoggedIn', 'true');
@@ -142,7 +142,7 @@ export default function OwnerPage() {
     );
   }
 
-  // ✅ Owner control panel after login
+ 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-6">
@@ -199,7 +199,7 @@ export default function OwnerPage() {
         </div>
       )}
 
-      {/* Fruit List */}
+     
       <h2 className="text-xl font-semibold mb-4">🍑 Fruits List</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {fruits.map((fruit) => (
@@ -207,7 +207,7 @@ export default function OwnerPage() {
             <img
               src={`/images/${fruit.name.toLowerCase()}.png`}
               alt={fruit.name}
-              className="w-full h-28 object-contain mb-2"
+              className="w-full h-45 object-contain mb-2"
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = '/images/placeholder.png';

@@ -15,13 +15,13 @@ export default function Homepage() {
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6 text-orange-600">🍎 Welcome to the Fruit Shop</h1>
 
-      <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-5 sm:grid-cols-3 gap-10">
         {fruits.map(fruit => (
           <div key={fruit.id} className="border p-4 rounded shadow">
             <img
               src={`/images/${fruit.name.toLowerCase()}.png`}
               alt={fruit.name}
-              className="w-full h-36 object-contain mb-2"
+              className="w-full h-50 object-contain mb-2"
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = '/images/placeholder.png';
@@ -32,7 +32,7 @@ export default function Homepage() {
             <p className="text-gray-600">In stock: {fruit.quantity}</p>
             <Link
               href="/order"
-              className="mt-2 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              className="mt-2 inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-800"
             >
               🛒 Order Now
             </Link>
