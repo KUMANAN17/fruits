@@ -22,7 +22,7 @@ export default function Homepage() {
               src={`/images/${fruit.name.toLowerCase()}.png`}
               alt={fruit.name}
               className="w-full h-50 object-contain mb-2"
-              onError={(e) => {
+              onError={(e) => {   
                 e.target.onerror = null;
                 e.target.src = '/images/placeholder.png';
               }}
